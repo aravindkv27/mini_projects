@@ -12,11 +12,11 @@ con_str = os.getenv("CONNECTION_STRING")
 
 client = MongoClient(con_str)
 
-learn_db = client.learnmongo
+# learn_db = client.learnmongo
 
-collections = learn_db.list_collection_names()
+# collections = learn_db.list_collection_names()
 
-print(collections)
+# print(collections)
 
 def insert_val():
 
@@ -31,8 +31,27 @@ def insert_val():
     print(inserted_id)
 
 # Check if the there is database name production if not it create one.
-production = client.production
-person_collection = production.person_collection
+prod = client['production']
+# print(production)
+per_coll = prod['person_collection']
+
+def create_documents():
+
+    Original_names = ["Aravind","Anirudhu","Atif","Harish"]
+    gaming_name = ["Jirariya","Itachi Uchicha","Might Guy","Naruto Uzumaki"]
+    ages = [20,21,21,20]
+
+    docs =[]
+
+    for on, gn, age in zip(Original_names,gaming_name,ages):
+        doc ={
+            "Original Name": on,
+            "Gaming Name": gn,
+            "Age":age
+        }
+        docs.append(doc)
+    
+    per_coll.insert_many(docs)
 
 dbs = client.list_database_names()
 
@@ -40,4 +59,4 @@ print(dbs)
 
 if __name__ == "__main__":
 
-    insert_val()
+    create_documents()
